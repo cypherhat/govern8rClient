@@ -26,6 +26,7 @@ class Notary(object):
         -------
 
         '''
+        requests.packages.urllib3.disable_warnings()
         self.notary_url = config.get_server_url()
         self.wallet = NotaryWallet(password)
         self.secure_message = SecureMessage(self.wallet)

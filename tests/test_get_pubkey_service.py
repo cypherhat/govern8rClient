@@ -2,6 +2,8 @@ import requests
 from wallet import NotaryWallet
 import configuration
 
+requests.packages.urllib3.disable_warnings()
+
 config = configuration.NotaryConfiguration("Client")
 
 wallet = NotaryWallet("foobar")

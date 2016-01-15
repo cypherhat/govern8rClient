@@ -7,6 +7,8 @@ from wallet import NotaryWallet
 from bitcoinlib.wallet import P2PKHBitcoinAddress
 from message import SecureMessage
 
+requests.packages.urllib3.disable_warnings()
+
 wallet = NotaryWallet("foobar")
 secure_message = SecureMessage(wallet)
 

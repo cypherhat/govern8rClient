@@ -1,6 +1,9 @@
 import file_stream_encrypt
 import wallet
 from bitcoinlib.core.key import CPubKey
+import requests
+
+requests.packages.urllib3.disable_warnings()
 
 file_name = "/Users/raju/Downloads/jdk-8u65-macosx-x64.dmg"
 encrypted_file = "/Users/raju/Downloads/encrypt_jdk-8u65-macosx-x64.dmg"

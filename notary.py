@@ -11,7 +11,7 @@ from configuration import NotaryConfiguration
 
 config = NotaryConfiguration()
 ssl_verify_mode = config.get_ssl_verify_mode()
-notary  = None
+notary = None
 
 
 class Notary(object):
@@ -26,10 +26,11 @@ class Notary(object):
         -------
 
         '''
+        requests.packages.urllib3.disable_warnings()
         self.notary_url = config.get_server_url()
         self.wallet = NotaryWallet(password)
         self.secure_message = SecureMessage(self.wallet)
-        response = requests.get(self.notary_url + '/api/v1/pubkey',verify=ssl_verify_mode)
+        response = requests.get(self.notary_url + '/api/v1/pubkey', verify=ssl_verify_mode)
         data = response.json()
         self.other_party_public_key_hex = data['public_key']
         other_party_public_key_decoded = self.other_party_public_key_hex.decode("hex")
@@ -49,23 +50,24 @@ class Notary(object):
         -------
               the http response status code.
         '''
-        #prepare the input.
+        # prepare the input.
         address = str(self.wallet.get_bitcoin_address())
         message = {'public_key': self.wallet.get_public_key_hex(), 'email': email}
         str_message = json.dumps(message)
         payload = self.secure_message.create_secure_payload(self.other_party_public_key_hex, str_message)
 
         # send to server
-        response = requests.put(self.notary_url + '/api/v1/account/' + address, data=payload,verify=ssl_verify_mode)
+        response = requests.put(self.notary_url + '/api/v1/account/' + address, data=payload, verify=ssl_verify_mode)
 
-        #process the response
+        # process the response
         if response.status_code != 200:
-                 return None
+            return None
         print response.content
         payload = response.content
         print payload
         return response.status_code
-    def rotate_the_cookie (self,response):
+
+    def rotate_the_cookie(self, response):
         '''
            utility to rotate the cookie.
         Parameters
@@ -81,7 +83,6 @@ class Notary(object):
             self.govenr8r_token = 'UNAUTHENTICATED'
             return
 
-
         self.cookies = requests.utils.dict_from_cookiejar(response.cookies)
         if self.cookies is not None:
             self.govenr8r_token = 'UNAUTHENTICATED'
@@ -89,10 +90,8 @@ class Notary(object):
 
         if 'govern8r_token' in self.cookies:
             self.govenr8r_token = self.cookies['govern8r_token']
-        else :
+        else:
             self.govenr8r_token = 'UNAUTHENTICATED'
-
-
 
     def login(self):
         '''
@@ -105,26 +104,27 @@ class Notary(object):
              basically true or false.
 
         '''
-        #call the server to get the challenge URL.
+        # call the server to get the challenge URL.
         self.govenr8r_token = 'UNAUTHENTICATED'
         address = str(self.wallet.get_bitcoin_address())
-        response = requests.get(self.notary_url + '/api/v1/challenge/' + address,verify=ssl_verify_mode)
+        response = requests.get(self.notary_url + '/api/v1/challenge/' + address, verify=ssl_verify_mode)
 
-        #process the response
+        # process the response
         if response.status_code != 200:
-                 return False
+            return False
         payload = json.loads(response.content)
         if self.secure_message.verify_secure_payload(self.other_party_address, payload):
             message = self.secure_message.get_message_from_secure_payload(payload)
-            #create another payload with the signed challenge message.
+            # create another payload with the signed challenge message.
             payload = self.secure_message.create_secure_payload(self.other_party_public_key_hex, message)
 
-            #call the server with secure payload
-            response = requests.put(self.notary_url + '/api/v1/challenge/' + address, data=payload,verify=ssl_verify_mode)
+            # call the server with secure payload
+            response = requests.put(self.notary_url + '/api/v1/challenge/' + address, data=payload,
+                                    verify=ssl_verify_mode)
 
-            #process the response.
+            # process the response.
             if response.status_code != 200:
-                 return False
+                return False
             self.rotate_the_cookie(response)
             return True
         else:
@@ -155,7 +155,7 @@ class Notary(object):
         -------
 
         '''
-        response = requests.get(confirmation_url,verify=ssl_verify_mode)
+        response = requests.get(confirmation_url, verify=ssl_verify_mode)
         return response.status_code
 
     def authenticated(self):
@@ -187,21 +187,21 @@ class Notary(object):
         document_hash = hashfile.hash_file_fp(path_to_file)
         meta_data['document_hash'] = document_hash
         print json.dumps(meta_data)
-        #create a secure payload
+        # create a secure payload
         notarization_payload = self.secure_message.create_secure_payload(self.other_party_public_key_hex,
                                                                          json.dumps(meta_data))
 
         # make the rest call.
         response = requests.put(self.notary_url + '/api/v1/account/' + address + '/notarization/' + document_hash,
-                                cookies=self.cookies, data=notarization_payload,verify=ssl_verify_mode)
+                                cookies=self.cookies, data=notarization_payload, verify=ssl_verify_mode)
 
-        #process the response
+        # process the response
         if response.status_code != 200:
-                 return None
-        #store the rotated cookie.
+            return None
+        # store the rotated cookie.
         self.rotate_the_cookie(response)
 
-        #process the returned payload
+        # process the returned payload
         payload = json.loads(response.content)
         print "payload"
         print payload
@@ -228,14 +228,14 @@ class Notary(object):
         print repr(path_to_file.name)
         print repr(self.notary_url + '/api/v1/upload/' + address + '/name/' + path_to_file.name)
 
-        #call the server
+        # call the server
         response = requests.post(self.notary_url + '/api/v1/upload/' + address + '/name/' + path_to_file.name,
-                                 cookies=self.cookies, files=files,verify=ssl_verify_mode)
+                                 cookies=self.cookies, files=files, verify=ssl_verify_mode)
 
         self.rotate_the_cookie(response)
-        #process the response
+        # process the response
         if response.status_code != 200:
-                 return None
+            return None
         # cookies = requests.utils.dict_from_cookiejar(response.cookies)
         # self.govenr8r_token = cookies['govern8r_token']
         print response.status_code
@@ -255,8 +255,8 @@ class Notary(object):
 
         address = str(self.wallet.get_bitcoin_address())
         response = requests.get(
-            self.notary_url + '/api/v1/account/' + address + '/notarization/' + document_hash + '/status',
-            cookies=self.cookies,verify=ssl_verify_mode)
+                self.notary_url + '/api/v1/account/' + address + '/notarization/' + document_hash + '/status',
+                cookies=self.cookies, verify=ssl_verify_mode)
 
         self.rotate_the_cookie(response)
         if response.status_code != 200:
@@ -270,16 +270,14 @@ class Notary(object):
                 return message
 
 
-
-
-def login_if_needed(notary,command):
+def login_if_needed(notary, command):
     needed = True
     if command == 'register' or command == 'confirm' or command == 'login':
-         needed = False
-    if needed :
-       if not notary.authenticated():
+        needed = False
+    if needed:
+        if not notary.authenticated():
             notary.login()
-       if not notary.authenticated():
+        if not notary.authenticated():
             print "Not able to login. exiting ..."
             return None
     return 'Done'
@@ -311,20 +309,18 @@ def main_method(cmd_str=None):
         args = parser.parse_args()
     else:
         args = parser.parse_args(cmd_str)
-    if notary is None :
+
+    if notary is None:
+        if not args.password:
+            print("Password is required!")
+            return
         notary = Notary(args.password)
     command = args.command
 
-
-    if not args.password:
-        print("Password is required!")
-        return
-
     print "Running " + command + " command"
 
-    if login_if_needed(notary,command) == None :
+    if login_if_needed(notary, command) == None:
         return
-
 
     if command == "register":
         if not args.email:

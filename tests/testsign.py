@@ -3,6 +3,8 @@ from wallet import NotaryWallet
 from base58 import base58_check_encode
 import os
 from bitcoinlib.wallet import CBitcoinSecret, P2PKHBitcoinAddress
+import requests
+requests.packages.urllib3.disable_warnings()
 
 def privateKeyToWif(key_hex):
     return base58_check_encode(0x80, key_hex.decode('hex'))

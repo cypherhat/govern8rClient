@@ -1,5 +1,9 @@
 import notary
 import os
+import requests
+
+requests.packages.urllib3.disable_warnings()
+
 print "deleting wallet file"
 if os.path.isfile("notarywallet.data"):
      os.remove("notarywallet.data")

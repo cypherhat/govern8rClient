@@ -9,7 +9,7 @@ from bitcoinlib.core.key import CPubKey
 from bitcoinlib.wallet import P2PKHBitcoinAddress
 from configuration import NotaryConfiguration
 
-config = NotaryConfiguration()
+config = NotaryConfiguration('./notaryconfig.ini')
 ssl_verify_mode = config.get_ssl_verify_mode()
 notary = None
 

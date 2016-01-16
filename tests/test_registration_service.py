@@ -1,6 +1,6 @@
 import requests
 import json
-from wallet import NotaryWallet
+from wallet import PlainWallet
 from bitcoinlib.wallet import P2PKHBitcoinAddress
 from message import SecureMessage
 import configuration
@@ -13,7 +13,7 @@ else:
 
 requests.packages.urllib3.disable_warnings()
 
-wallet = NotaryWallet("foobar")
+wallet = PlainWallet()
 secure_message = SecureMessage(wallet)
 
 ## Test GET pubkey

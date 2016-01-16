@@ -3,7 +3,7 @@ import argparse
 import requests
 import json
 import hashfile
-from encrypted_wallet import NotaryWallet
+from wallet import ClientWallet
 from message import SecureMessage
 from bitcoinlib.core.key import CPubKey
 from bitcoinlib.wallet import P2PKHBitcoinAddress
@@ -28,7 +28,7 @@ class Notary(object):
         '''
         requests.packages.urllib3.disable_warnings()
         self.notary_url = config.get_server_url()
-        self.wallet = NotaryWallet(password)
+        self.wallet = ClientWallet(password)
         self.secure_message = SecureMessage(self.wallet)
         response = requests.get(self.notary_url + '/api/v1/pubkey', verify=ssl_verify_mode)
         data = response.json()

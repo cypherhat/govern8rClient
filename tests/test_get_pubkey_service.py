@@ -1,5 +1,5 @@
 import requests
-from wallet import NotaryWallet
+from wallet import PlainWallet
 import configuration
 
 config = configuration.NotaryConfiguration('../notaryconfig.ini')
@@ -8,7 +8,7 @@ if config.is_remote_testing():
 else:
     notary_url = config.get_local_server_url()
 
-wallet = NotaryWallet("foobar")
+wallet = PlainWallet()
 requests.packages.urllib3.disable_warnings()
 
 print ("Testing against %s" % notary_url)

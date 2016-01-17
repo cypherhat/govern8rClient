@@ -5,7 +5,7 @@ configparser==3.3.0.post2
 cryptography==1.1.2
 ecdsa==0.13
 enum34==1.1.2
-govern8rLib==0.0.1
+git+https://github.com/cypherhat/python-bitcoinlib
 idna==2.0
 ipaddress==1.0.15
 Naked==0.1.31
@@ -13,7 +13,7 @@ pyasn1==0.1.9
 pycparser==2.14
 pycrypto==2.6.1
 pyOpenSSL==0.15.1
-python-bitcoinlib===0.5.1-SNAPSHOT
+git+https://github.com/cypherhat/python-bitcoinlib
 PyYAML==3.11
 requests==2.9.1
 shellescape==3.4.1

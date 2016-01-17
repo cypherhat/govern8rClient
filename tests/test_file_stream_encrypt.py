@@ -9,7 +9,7 @@ file_name = "/Users/raju/Downloads/jdk-8u65-macosx-x64.dmg"
 encrypted_file = "/Users/raju/Downloads/encrypt_jdk-8u65-macosx-x64.dmg"
 decrypted_file = "/Users/raju/Downloads/decrypt-8u65-macosx-x64.dmg"
 
-wallet = wallet.NotaryWallet("foobar")
+wallet = wallet.PlainWallet()
 public_key = CPubKey(wallet.get_public_key_hex().decode("hex"))
 
 

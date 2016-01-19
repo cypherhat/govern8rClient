@@ -2,7 +2,7 @@ import requests
 import json
 
 from bitcoinlib.core.key import CPubKey
-from wallet import PlainWallet
+import wallet
 from bitcoinlib.wallet import P2PKHBitcoinAddress
 from message import SecureMessage
 import configuration
@@ -16,7 +16,7 @@ else:
 
 requests.packages.urllib3.disable_warnings()
 
-wallet = PlainWallet()
+wallet = wallet.create_wallet(config.get_wallet_type(), config.get_key_id())
 secure_message = SecureMessage(wallet)
 
 ## Test GET pubkey

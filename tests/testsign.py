@@ -1,5 +1,5 @@
 import encrypt
-from wallet import PlainWallet
+import wallet
 from base58 import base58_check_encode
 import os
 from bitcoinlib.wallet import CBitcoinSecret, P2PKHBitcoinAddress
@@ -9,7 +9,7 @@ requests.packages.urllib3.disable_warnings()
 def privateKeyToWif(key_hex):
     return base58_check_encode(0x80, key_hex.decode('hex'))
 
-wallet = PlainWallet()
+wallet = wallet.create_wallet(config.get_wallet_type(), config.get_key_id())
 
 print("\nWallet Private Key %s" % wallet.get_private_key())
 print("\nWallet Public Key %s" % wallet.get_public_key())

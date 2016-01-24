@@ -6,8 +6,13 @@ import wallet
 from bitcoinlib.wallet import P2PKHBitcoinAddress
 from message import SecureMessage
 import configuration
+import log_handlers
 
 config = configuration.NotaryConfiguration('../notaryconfig.ini')
+
+logger = log_handlers.get_logger(config)
+logger.debug("-------------------------ENVIRONMENT--------------------------")
+logger.debug("Am I Local: %s " % config.is_local_host())
 if config.is_remote_testing():
     notary_url = config.get_remote_server_url()
 else:
@@ -15,7 +20,7 @@ else:
 
 requests.packages.urllib3.disable_warnings()
 
-wallet = wallet.create_wallet(config.get_wallet_type(), config.get_key_id())
+wallet = wallet.create_wallet(config.get_wallet_type(), config.get_key_id(),logger)
 secure_message = SecureMessage(wallet)
 
 

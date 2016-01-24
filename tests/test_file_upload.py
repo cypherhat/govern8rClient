@@ -7,6 +7,7 @@ import wallet
 from bitcoinlib.wallet import P2PKHBitcoinAddress
 from message import SecureMessage
 import configuration
+import log_handlers
 
 config = configuration.NotaryConfiguration('../notaryconfig.ini')
 if config.is_remote_testing():
@@ -15,8 +16,11 @@ else:
     notary_url = config.get_local_server_url()
 
 requests.packages.urllib3.disable_warnings()
+logger = log_handlers.get_logger(config)
+logger.debug("-------------------------ENVIRONMENT--------------------------")
+logger.debug("Am I Local: %s " % config.is_local_host())
 
-wallet = wallet.create_wallet(config.get_wallet_type(), config.get_key_id())
+wallet = wallet.create_wallet(config.get_wallet_type(), config.get_key_id(),logger)
 secure_message = SecureMessage(wallet)
 
 
@@ -49,8 +53,8 @@ print("Status: %s" % response.status_code)
 
 #file_name = "/Users/raju/Downloads/jdk-8u65-macosx-x64.dmg"
 #encrypted_file = "/Users/raju/Downloads/encrypt_jdk-8u65-macosx-x64.dmg"
-file_name = '/Users/tssbi08/govern8r/IP/README.txt'
-encrypted_file = '/Users/tssbi08/govern8r/IP/Encrypted_README.txt'
+file_name = '/Users/raju/govern8r/IP/README.txt'
+encrypted_file = '/Users/raju/govern8r/IP/Encrypted_README.txt'
 
 #public_key = CPubKey(wallet.get_public_key_hex().decode("hex"))
 #file_stream_encrypt.encrypt_file(file_name,encrypted_file,public_key)

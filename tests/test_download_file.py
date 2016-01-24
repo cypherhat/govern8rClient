@@ -7,6 +7,7 @@ import wallet
 from bitcoinlib.wallet import P2PKHBitcoinAddress
 from message import SecureMessage
 import configuration
+import log_handlers
 
 config = configuration.NotaryConfiguration('../notaryconfig.ini')
 if config.is_remote_testing():
@@ -15,8 +16,11 @@ else:
     notary_url = config.get_local_server_url()
 
 requests.packages.urllib3.disable_warnings()
+logger = log_handlers.get_logger(config)
+logger.debug("-------------------------ENVIRONMENT--------------------------")
+logger.debug("Am I Local: %s " % config.is_local_host())
 
-wallet = wallet.create_wallet(config.get_wallet_type(), config.get_key_id())
+wallet = wallet.create_wallet(config.get_wallet_type(), config.get_key_id(),logger)
 secure_message = SecureMessage(wallet)
 
 
@@ -45,7 +49,7 @@ govern8r_token = cookies['govern8r_token']
 print("Token from authentication: %s" % govern8r_token)
 print("Status: %s" % response.status_code)
 
-file_name = '/Users/tssbi08/govern8r/IP/README.txt'
+file_name = '/Users/raju/govern8r/IP/README.txt'
 document_hash = hashfile.hash_file(file_name)
 
 url = notary_url+'/api/v1/account/' + address + '/document/' + document_hash

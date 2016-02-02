@@ -7,6 +7,7 @@ from kivy.properties import ObjectProperty
 from notary_client import Notary, NotaryError
 from client_wallet import ClientWallet
 import simplecrypt
+from  kivy.uix.filechooser import FileChooserListView
 
 notary_obj = None
 
@@ -14,7 +15,8 @@ Builder.load_file("create_wallet.kv")
 Builder.load_file("register_wallet.kv")
 Builder.load_file("password.kv")
 Builder.load_file("confirmation.kv")
-
+Builder.load_file("select_notary_file.kv")
+Builder.load_file("upload_option.kv")
 
 # Declare both screens
 class CreateWalletScreen(Screen):
@@ -80,7 +82,22 @@ class ConfirmScreen(Screen):
             sm.current = 'selectnotaryfile'
 
 class SelectNotaryFileScreen(Screen):
-    pass
+    filechooser = ObjectProperty(None)
+    def my_callback(self):
+        print('The button <%s> is being pressed' + str(self.ids.filechooser.selection))
+        sm.current = 'uploadoption'
+
+
+class UploadFileScreen(Screen):
+
+    def yes_callback(self):
+        print('The button Yes is being pressed')
+        sm.current = 'uploadoption'
+
+    def no_callback(self):
+        print('The button Nois being pressed')
+        sm.current = 'uploadoption'
+
 
 
 
@@ -91,11 +108,13 @@ smrwallet = RegisterWalletScreen(name='registerwallet')
 openwallet = PasswordScreen(name='openwallet')
 confirmemail = ConfirmScreen(name='confirmemail')
 selectnotaryfile=SelectNotaryFileScreen(name='selectnotaryfile')
+uploadoption = UploadFileScreen(name='uploadoption')
 sm.add_widget(smcwallet)
 sm.add_widget(smrwallet)
 sm.add_widget(openwallet)
 sm.add_widget(confirmemail)
 sm.add_widget(selectnotaryfile)
+sm.add_widget(uploadoption)
 
 client_wallet_obj = ClientWallet("somepassword")
 print "wallet exists"

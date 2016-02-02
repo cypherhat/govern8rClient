@@ -1,0 +1,38 @@
+<CreateWalletScreen>:
+    FloatLayout:
+        Label:
+            text: "Notary - Create Wallet "
+            pos_hint: {'x': .1, 'y': .8}
+            size_hint: .5, .1
+            font_size: '30sp'
+        Label:
+            text: "Password : "
+            pos_hint: {'x': .1, 'y': .7}
+            size_hint: .23, .1
+            halign: 'left'
+            font_size: '20sp'
+        TextInput:
+            id: password
+            pos_hint: {'x': .3, 'y': .7}
+            size_hint: .6, .1
+            password: 'true'
+            font_size: '20sp'
+        Label:
+            text: "Verify Password : "
+            pos_hint: {'x': .1, 'y': .5}
+            size_hint: .16, .1
+            halign: 'left'
+            font_size: '20sp'
+        TextInput:
+            id: retype_password
+            pos: 400, 500
+            pos_hint: {'x': .3, 'y': .5}
+            size_hint: .6, .1
+            password: 'true'
+            font_size: '20sp'
+        Button:
+            text: 'Create'
+            pos_hint: {'x': .3, 'y': .3}
+            size_hint: .3, .1
+            font_size: '20sp'
+            on_press: root.create_wallet_callback()

@@ -1,13 +1,20 @@
 <UploadFileScreen>:
     FloatLayout:
         Label:
-            text: "You can upload your file for safe and secure storage."
+            id:selected_file
+            text: "Selected File:" +root.notary_file
             pos_hint: {'x': .1, 'y': .8}
+            size_hint: .7, .1
+            halign: 'left'
+            font_size: '20sp'
+        Label:
+            text: "You can upload your file for safe and secure storage."
+            pos_hint: {'x': .1, 'y': .7}
             size_hint: .8, .1
             font_size: '30sp'
         Label:
             text: "Do you want to upload this file?"
-            pos_hint: {'x': .1, 'y': .7}
+            pos_hint: {'x': .1, 'y': .6}
             size_hint: .7, .1
             halign: 'left'
             font_size: '20sp'

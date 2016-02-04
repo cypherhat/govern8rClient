@@ -3,13 +3,13 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty,StringProperty
 from notary_client import Notary, NotaryError
 from client_wallet import ClientWallet
 import simplecrypt
-from  kivy.uix.filechooser import FileChooserListView
 
 notary_obj = None
+selected_file_name = None
 
 Builder.load_file("create_wallet.kv")
 Builder.load_file("register_wallet.kv")
@@ -85,10 +85,15 @@ class SelectNotaryFileScreen(Screen):
     filechooser = ObjectProperty(None)
     def my_callback(self):
         print('The button <%s> is being pressed' + str(self.ids.filechooser.selection))
+        selected_file_name=str(self.ids.filechooser.selection)
+        uploadoption.notary_file = selected_file_name
         sm.current = 'uploadoption'
 
 
 class UploadFileScreen(Screen):
+
+    notary_file = StringProperty()
+    selected_file = ObjectProperty(None)
 
     def yes_callback(self):
         print('The button Yes is being pressed')
@@ -124,6 +129,7 @@ if client_wallet_obj.wallet_exists():
     sm.current = "openwallet"
 else:
     sm.current = "createwallet"
+sm.current='selectnotaryfile'
 
 
 # layout = FloatLayout()

@@ -157,10 +157,10 @@ else:
 # smsetting.add_widget(layout)
 
 
-class TestApp(App):
+class NotaryApp(App):
     def build(self):
         return sm
 
 
 if __name__ == '__main__':
-    TestApp().run()
+    NotaryApp().run()

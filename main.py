@@ -4,7 +4,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.properties import ObjectProperty,StringProperty
-from notary_client import Notary, NotaryError
+from notary_client import NotaryClient, NotaryException
 from client_wallet import ClientWallet
 import simplecrypt
 
@@ -29,7 +29,7 @@ class CreateWalletScreen(Screen):
         password_value = self.ids.password.text
         retyped_value = self.ids.retype_password.text
         if password_value == retyped_value:
-            notary_obj = Notary("notaryconfig.ini", password_value)
+            notary_obj = NotaryClient("notaryconfig.ini", password_value)
             sm.current = 'registerwallet'
         else:
             popup = Popup(title='Password Mismatch', content=Label(text='Passwords does not match'),
@@ -55,12 +55,20 @@ class PasswordScreen(Screen):
         print('open wallet callback called')
         password_value = self.ids.password.text
         try:
-            notary_obj = Notary("notaryconfig.ini", password_value)
-            #print notary_obj.register_user_status()
-            if isinstance(notary_obj.register_user_status(), NotaryError):
-                sm.current = 'confirmemail'
-            else:
-                sm.current = 'selectnotaryfile'
+            notary_obj = NotaryClient("notaryconfig.ini", password_value)
+            account = notary_obj.get_account()
+            sm.current = 'selectnotaryfile'
+        except NotaryException as e:
+            print("Code %s " % e.error_code)
+            print(e.message)
+            sm.current = 'confirmemail'
+        except ValueError as e:
+            print("ValueError ")
+            print(e.message)
+            popup = Popup(title='Confirmation', content=Label(text='Not yet confirmed. Try again.'), size_hint=(None, None),
+                          size=(400, 200))
+            popup.open()
+            sm.current = 'confirmemail'
         except simplecrypt.DecryptionException as e:
             print e.message
             popup = Popup(title='Wrong Password', content=Label(text='Wrong password'), size_hint=(None, None),
@@ -73,13 +81,23 @@ class ConfirmScreen(Screen):
         global notary_obj
         print('confirm email callback called')
         #print notary_obj.register_user_status()
-        if isinstance(notary_obj.register_user_status(),NotaryError):
+        try:
+            account = notary_obj.get_account()
+            sm.current = 'selectnotaryfile'
+        except ValueError as e:
+            print("ValueError ")
+            print(e.message)
             popup = Popup(title='Confirmation', content=Label(text='Not yet confirmed. Try again.'), size_hint=(None, None),
                           size=(400, 200))
             popup.open()
-            sm.current = 'confirmemail'
-        else:
-            sm.current = 'selectnotaryfile'
+            sm.current="confirmemail"
+        except NotaryException as e:
+            if e.error_code == 404 or e.error_code == 403:
+                popup = Popup(title='Confirmation', content=Label(text='Not yet confirmed. Try again.'), size_hint=(None, None),
+                          size=(400, 200))
+                popup.open()
+                sm.current = 'confirmemail'
+
 
 class SelectNotaryFileScreen(Screen):
     filechooser = ObjectProperty(None)
@@ -129,7 +147,6 @@ if client_wallet_obj.wallet_exists():
     sm.current = "openwallet"
 else:
     sm.current = "createwallet"
-sm.current='selectnotaryfile'
 
 
 # layout = FloatLayout()

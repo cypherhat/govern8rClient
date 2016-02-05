@@ -3,7 +3,7 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
-from kivy.properties import ObjectProperty,StringProperty
+from kivy.properties import ObjectProperty, StringProperty
 from notary_client import NotaryClient, NotaryException
 from client_wallet import ClientWallet
 import simplecrypt
@@ -17,6 +17,7 @@ Builder.load_file("password.kv")
 Builder.load_file("confirmation.kv")
 Builder.load_file("select_notary_file.kv")
 Builder.load_file("upload_option.kv")
+
 
 # Declare both screens
 class CreateWalletScreen(Screen):
@@ -65,7 +66,8 @@ class PasswordScreen(Screen):
         except ValueError as e:
             print("ValueError ")
             print(e.message)
-            popup = Popup(title='Confirmation', content=Label(text='Not yet confirmed. Try again.'), size_hint=(None, None),
+            popup = Popup(title='Confirmation', content=Label(text='Not yet confirmed. Try again.'),
+                          size_hint=(None, None),
                           size=(400, 200))
             popup.open()
             sm.current = 'confirmemail'
@@ -80,57 +82,101 @@ class ConfirmScreen(Screen):
     def confirm_email_callback(self):
         global notary_obj
         print('confirm email callback called')
-        #print notary_obj.register_user_status()
+        # print notary_obj.register_user_status()
         try:
             account = notary_obj.get_account()
             sm.current = 'selectnotaryfile'
         except ValueError as e:
             print("ValueError ")
             print(e.message)
-            popup = Popup(title='Confirmation', content=Label(text='Not yet confirmed. Try again.'), size_hint=(None, None),
+            popup = Popup(title='Confirmation', content=Label(text='Not yet confirmed. Try again.'),
+                          size_hint=(None, None),
                           size=(400, 200))
             popup.open()
-            sm.current="confirmemail"
+            sm.current = "confirmemail"
         except NotaryException as e:
             if e.error_code == 404 or e.error_code == 403:
-                popup = Popup(title='Confirmation', content=Label(text='Not yet confirmed. Try again.'), size_hint=(None, None),
-                          size=(400, 200))
+                popup = Popup(title='Confirmation', content=Label(text='Not yet confirmed. Try again.'),
+                              size_hint=(None, None),
+                              size=(400, 200))
                 popup.open()
                 sm.current = 'confirmemail'
 
 
 class SelectNotaryFileScreen(Screen):
     filechooser = ObjectProperty(None)
-    def my_callback(self):
-        print('The button <%s> is being pressed' + str(self.ids.filechooser.selection))
-        selected_file_name=str(self.ids.filechooser.selection)
+
+    def my_callback(self, filename):
+        print('The button <%s> is being pressed' + filename[0])
+        selected_file_name = filename[0]
         uploadoption.notary_file = selected_file_name
         sm.current = 'uploadoption'
 
 
-class UploadFileScreen(Screen):
+def getMetaData():
+    meta_data = {
+        'title': 'My favorite monkey',
+        'creator': 'Ploughman, J.J.',
+        'subject': 'TV show',
+        'description': 'A show about a monkey... that you like the best...',
+        'publisher': 'J.J. Ploughman',
+        'contributor': 'J.J. Ploughman',
+        'date': '2001-08-03T03:00:00.000000',
+        'type': 'Video',
+        'format': 'mpeg',
+        'source': 'CBS',
+        'language': 'en',
+        'relation': 'Unknown',
+        'coverage': 'Unknown',
+        'rights': 'Unknown'
+    }
+    return meta_data
 
+
+class UploadFileScreen(Screen):
     notary_file = StringProperty()
     selected_file = ObjectProperty(None)
 
     def yes_callback(self):
         print('The button Yes is being pressed')
+        result = notary_obj.notarize_file(str(self.notary_file), getMetaData())
+        message_value = 'Your document notarization is done !!!' + 'https://live.blockcypher.com/btc-testnet/tx/' + str(
+            result)
+        popup = Popup(title='Confirmation of Notary', content=Label(text=message_value),
+                      size_hint=(None, None),
+                      size=(400, 200))
+        popup.open()
+
+        notary_obj.upload_file(str(self.notary_file))
+        popup = Popup(title='Confirmation of Upload', content=Label(text='Your document upload is done !!!'),
+                      size_hint=(None, None),
+                      size=(400, 200))
+        popup.open()
+        popup = Popup(title='Confirmation of Notary', content=Label(text=str(result)),
+                      size_hint=(None, None),
+                      size=(400, 200))
+        popup.open()
+
         sm.current = 'uploadoption'
 
     def no_callback(self):
         print('The button Nois being pressed')
-        sm.current = 'uploadoption'
+        result = notary_obj.notarize_file(self.notary_file, getMetaData())
+        popup = Popup(title='Confirmation of Notary', content=Label(
+                text='Your document notarization is done !!!' + 'https://live.blockcypher.com/btc-testnet/tx/' + result[
+                    'hash']),
+                      size_hint=(None, None),
+                      size=(400, 200))
+        popup.open()
+        sm.current = 'uploadoption'  # Create the screen manager
 
 
-
-
-# Create the screen manager
 sm = ScreenManager()
 smcwallet = CreateWalletScreen(name='createwallet')
 smrwallet = RegisterWalletScreen(name='registerwallet')
 openwallet = PasswordScreen(name='openwallet')
 confirmemail = ConfirmScreen(name='confirmemail')
-selectnotaryfile=SelectNotaryFileScreen(name='selectnotaryfile')
+selectnotaryfile = SelectNotaryFileScreen(name='selectnotaryfile')
 uploadoption = UploadFileScreen(name='uploadoption')
 sm.add_widget(smcwallet)
 sm.add_widget(smrwallet)

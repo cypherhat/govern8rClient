@@ -16,7 +16,7 @@ class SelectNotaryFileScreen(Screen):
         print('The button <%s> is being pressed' + filename[0])
         selected_file_name = filename[0]
         notary_app.uploadoption.notary_file = selected_file_name
-        notary_app.sm.current = 'uploadoption'
+        notary_app.sm.current = 'metadata'
 
 
 def getMetaData():
@@ -75,3 +75,5 @@ class UploadFileScreen(Screen):
                       size=(400, 200))
         popup.open()
         notary_app.sm.current = 'uploadoption'  # Create the screen manager
+class MetadataScreen(Screen):
+    pass

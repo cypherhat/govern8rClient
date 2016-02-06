@@ -4,8 +4,10 @@ from kivy.uix.label import Label
 from kivy.properties import ObjectProperty, StringProperty
 
 
-def initFlow(m_app):
+def initFlow(m_app , ui_test):
     global notary_app
+    global ui_test_mode
+    ui_test_mode = ui_test
     notary_app = m_app
 
 
@@ -15,6 +17,9 @@ class SelectNotaryFileScreen(Screen):
     notary_file = StringProperty()
 
     def my_callback(self, filename):
+        if ui_test_mode:
+            notary_app.sm.current = "selectnotaryfile"
+            return
         if len(filename) >0:
             print('The button <%s> is being pressed' + filename[0])
             selected_file_name = filename[0]
@@ -52,6 +57,9 @@ class UploadFileScreen(Screen):
 
     def yes_callback(self):
         print('The button Yes is being pressed')
+        if ui_test_mode:
+            notary_app.sm.current = "uploadoption"
+            return
         result = notary_app.notary_obj.notarize_file(str(self.notary_file), getMetaData())
         message_value = 'Your document notarization is done !!!' + 'https://live.blockcypher.com/btc-testnet/tx/' + str(
                 result)
@@ -74,6 +82,9 @@ class UploadFileScreen(Screen):
 
     def no_callback(self):
         print('The button Nois being pressed')
+        if ui_test_mode:
+            notary_app.sm.current = "uploadoption"
+            return
         result = notary_app.notary_obj.notarize_file(self.notary_file, getMetaData())
         popup = Popup(title='Confirmation of Notary', content=Label(
                 text='Your document notarization is done !!!' + 'https://live.blockcypher.com/btc-testnet/tx/' + result[

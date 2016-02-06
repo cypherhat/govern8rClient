@@ -1,7 +1,22 @@
 <SelectNotaryFileScreen>:
-    FloatLayout:
+    BoxLayout:
+        orientation: 'vertical'
         FileChooserIconView:
             id: filechooser
             show_hidden: True
             on_selection: root.my_callback(filechooser.selection)
             size: .9, .6
+        Label:
+            text: "Please select a file to upload above:"+root.notary_file
+            id: filelabel
+            pos_hint: {'x': .0, 'y': .0}
+            size_hint: .5, .1
+            halign: 'left'
+            font_size: '20sp'
+        Button:
+            text: 'Next'
+            pos_hint: {'x': .05, 'y': .0}
+            size_hint: .3, .1
+            font_size: '20sp'
+            on_press: root.manager.current = 'metadata'
+            padding_left: .1

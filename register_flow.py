@@ -51,7 +51,10 @@ class PasswordScreen(Screen):
         except NotaryException as e:
             print("Code %s " % e.error_code)
             print(e.message)
-            notary_app.sm.current = 'confirmemail'
+            if e.error_code == 404:
+                notary_app.sm.current = 'registerwallet'
+            elif e.error_code == 403:
+                notary_app.sm.current = 'confirmemail'
         except ValueError as e:
             print("ValueError ")
             print(e.message)

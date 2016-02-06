@@ -11,12 +11,19 @@ def initFlow(m_app):
 
 class SelectNotaryFileScreen(Screen):
     filechooser = ObjectProperty(None)
+    filelabel = ObjectProperty(None)
+    notary_file = StringProperty()
 
     def my_callback(self, filename):
-        print('The button <%s> is being pressed' + filename[0])
-        selected_file_name = filename[0]
-        notary_app.uploadoption.notary_file = selected_file_name
-        notary_app.sm.current = 'metadata'
+        if len(filename) >0:
+            print('The button <%s> is being pressed' + filename[0])
+            selected_file_name = filename[0]
+            notary_app.uploadoption.notary_file = selected_file_name
+            self.notary_file = selected_file_name
+            notary_app.sm.current='selectnotaryfile'
+        else:
+            print "Nothing selected"
+
 
 
 def getMetaData():

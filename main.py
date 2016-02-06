@@ -16,6 +16,7 @@ class NotaryApp(App):
         Builder.load_file("confirmation.kv")
         Builder.load_file("select_notary_file.kv")
         Builder.load_file("upload_option.kv")
+        Builder.load_file("meta_data.kv")
         self.notary_obj = None
         self.selected_file_name = None
         self.sm = ScreenManager()
@@ -24,6 +25,7 @@ class NotaryApp(App):
         self.openwallet = register_flow.PasswordScreen(name='openwallet')
         self.confirmemail=register_flow.ConfirmScreen(name='confirmemail')
         self.selectnotaryfile = notary_flow.SelectNotaryFileScreen(name='selectnotaryfile')
+        self.meta_data = notary_flow.MetadataScreen(name='metadata')
         self.uploadoption = notary_flow.UploadFileScreen(name='uploadoption')
         self.sm.add_widget(self.smcwallet)
         self.sm.add_widget(self.smrwallet)
@@ -31,6 +33,7 @@ class NotaryApp(App):
         self.sm.add_widget(self.confirmemail)
         self.sm.add_widget(self.selectnotaryfile)
         self.sm.add_widget(self.uploadoption)
+        self.sm.add_widget(self.meta_data)
 
     def find_state(self):
         client_wallet_obj = ClientWallet("somepassword")

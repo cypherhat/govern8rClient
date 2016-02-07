@@ -50,7 +50,7 @@ class PasswordScreen(Screen):
     def open_wallet_callback(self):
         print('open wallet callback called')
         if ui_test_mode:
-            notary_app.sm.current = "selectnotaryfile"
+            notary_app.sm.current = "landingpage"
             return
         from notary_client import NotaryClient, NotaryException
         import simplecrypt
@@ -69,7 +69,7 @@ class PasswordScreen(Screen):
         try:
             notary_app.notary_obj = NotaryClient("notaryconfig.ini", password_value)
             account = notary_app.notary_obj.get_account()
-            notary_app.sm.current = 'selectnotaryfile'
+            notary_app.sm.current = 'landingpage'
         except NotaryException as e:
             print("Code %s " % e.error_code)
             print(e.message)
@@ -96,13 +96,13 @@ class ConfirmScreen(Screen):
     def confirm_email_callback(self):
         print('confirm email callback called')
         if ui_test_mode:
-            notary_app.sm.current = "selectnotaryfile"
+            notary_app.sm.current = "landingpage"
             return
         from notary_client import  NotaryException
         # print notary_obj.register_user_status()
         try:
             account = notary_app.notary_obj.get_account()
-            notary_app.sm.current = 'selectnotaryfile'
+            notary_app.sm.current = 'landingpage'
         except ValueError as e:
             print("ValueError ")
             print(e.message)

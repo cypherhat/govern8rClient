@@ -1,11 +1,6 @@
 <CreateWalletScreen>:
     FloatLayout:
         Label:
-            text: "Notary - Create Wallet "
-            pos_hint: {'x': .1, 'y': .8}
-            size_hint: .5, .1
-            font_size: '30sp'
-        Label:
             text: "Password : "
             pos_hint: {'x': .1, 'y': .7}
             size_hint: .23, .1
@@ -30,9 +25,19 @@
             size_hint: .6, .1
             password: 'true'
             font_size: '40sp'
-        Button:
-            text: 'Create'
-            pos_hint: {'x': .3, 'y': .3}
-            size_hint: .3, .1
-            font_size: '20sp'
-            on_press: root.create_wallet_callback()
+        ActionBar:
+            pos_hint: {'x': .0, 'y': .9}
+            ActionView:
+                use_separator: True
+                ActionPrevious:
+                    app_icon:'img/logo.png'
+                    title: '  Create Wallet'
+                    with_previous: False
+                ActionOverflow:
+                ActionButton:
+                    icon:'img/prev.png'
+                    disabled: True
+                ActionButton:
+                    icon:'img/next.png'
+                    text: 'Next'
+                    on_press: root.create_wallet_callback()

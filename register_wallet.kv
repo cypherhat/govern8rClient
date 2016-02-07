@@ -24,13 +24,13 @@
                     app_icon:'img/logo.png'
                     title: '  Register Wallet'
                     with_previous: False
-                    on_press: root.register_wallet_callback()
+
 
                 ActionOverflow:
                 ActionButton:
                     icon:'img/prev.png'
-                    text: 'Previous'
-
+                    disabled: True
                 ActionButton:
                     icon:'img/next.png'
                     text: 'Next'
+                    on_press: root.register_wallet_callback()

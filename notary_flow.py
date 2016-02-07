@@ -58,7 +58,7 @@ class UploadFileScreen(Screen):
     def yes_callback(self):
         print('The button Yes is being pressed')
         if ui_test_mode:
-            notary_app.sm.current = "openwallet"
+            notary_app.sm.current = "landingpage"
             return
         result = notary_app.notary_obj.notarize_file(str(self.notary_file), getMetaData())
         message_value = 'Your document notarization is done !!!' + 'https://live.blockcypher.com/btc-testnet/tx/' + str(
@@ -78,7 +78,7 @@ class UploadFileScreen(Screen):
                       size=(400, 200))
         popup.open()
 
-        notary_app.sm.current = 'uploadoption'
+        notary_app.sm.current = 'landingpage'
 
     def no_callback(self):
         print('The button Nois being pressed')

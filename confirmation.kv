@@ -1,19 +1,26 @@
 <ConfirmScreen>:
     FloatLayout:
         Label:
-            text: "Email Confirmation"
-            pos_hint: {'x': .1, 'y': .8}
-            size_hint: .425, .1
-            font_size: '30sp'
-        Label:
             text: "Please check your email. After confirmation proceed."
             pos_hint: {'x': .1, 'y': .7}
             size_hint: .7, .1
             halign: 'left'
             font_size: '20sp'
-        Button:
-            text: 'Email Received'
-            pos_hint: {'x': .2, 'y': .5}
-            size_hint: .3, .1
-            font_size: '20sp'
-            on_press: root.confirm_email_callback()
+
+        ActionBar:
+            pos_hint: {'x': .0, 'y': .9}
+            ActionView:
+
+                use_separator: True
+                ActionPrevious:
+                    app_icon:'img/logo.png'
+                    title: '  Email Confirmation'
+                    with_previous: False
+                ActionOverflow:
+                ActionButton:
+                    icon:'img/prev.png'
+                    disabled: True
+                ActionButton:
+                    icon:'img/next.png'
+                    text: 'Next'
+                    on_press: root.confirm_email_callback()

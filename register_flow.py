@@ -55,6 +55,17 @@ class PasswordScreen(Screen):
         from notary_client import NotaryClient, NotaryException
         import simplecrypt
         password_value = self.ids.password.text
+        if password_value is None:
+            popup = Popup(title='Wrong Password', content=Label(text='Wrong password'), size_hint=(None, None),
+                          size=(400, 200))
+            popup.open()
+            return
+        if len(password_value) is 0:
+            popup = Popup(title='Wrong Password', content=Label(text='Wrong password'), size_hint=(None, None),
+                          size=(400, 200))
+            popup.open()
+            return
+
         try:
             notary_app.notary_obj = NotaryClient("notaryconfig.ini", password_value)
             account = notary_app.notary_obj.get_account()

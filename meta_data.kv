@@ -7,90 +7,36 @@
             font_size: '30sp'
         Label:
             text: "Title : "
-            pos_hint: {'x': .0, 'y': .8}
-            size_hint: .16, .1
-            halign: 'right'
-            text_size: (600, 60)
-            font_size: '20sp'
-        TextInput:
-            pos_hint: {'x': .3, 'y': .8}
-            size_hint: .6, .1
-            text_size: (600, 60)
-        Label:
-            text: "Subject : "
             pos_hint: {'x': .0, 'y': .7}
             size_hint: .16, .1
             halign: 'right'
             text_size: (600, 60)
             font_size: '20sp'
         TextInput:
-            pos: 400, 500
             pos_hint: {'x': .3, 'y': .7}
             size_hint: .6, .1
             text_size: (600, 60)
-        Label:
-            text: "Description : "
-            pos_hint: {'x': .0, 'y': .6}
-            size_hint: .16, .1
-            halign: 'right'
-            text_size: (600, 60)
-            font_size: '20sp'
-        TextInput:
-            pos: 400, 500
-            pos_hint: {'x': .3, 'y': .6}
-            size_hint: .6, .1
-            text_size: (600, 60)
-        Label:
-            text: "Publisher : "
-            pos_hint: {'x': .0, 'y': .5}
-            size_hint: .16, .1
-            halign: 'right'
-            text_size: (600, 60)
-            font_size: '20sp'
-        TextInput:
-            pos: 400, 500
-            pos_hint: {'x': .3, 'y': .5}
-            size_hint: .6, .1
-            text_size: (600, 60)
-        Label:
-            text: "Contributor : "
-            pos_hint: {'x': .0, 'y': .4}
-            size_hint: .16, .1
-            halign: 'right'
-            text_size: (600, 60)
-            font_size: '20sp'
-        TextInput:
-            pos: 400, 500
-            pos_hint: {'x': .3, 'y': .4}
-            size_hint: .6, .1
-            text_size: (600, 60)
-        Label:
-            text: "Type : "
-            pos_hint: {'x': .0, 'y': .3}
-            size_hint: .16, .1
-            halign: 'right'
-            text_size: (600, 60)
-            font_size: '20sp'
-        TextInput:
-            pos: 400, 500
-            pos_hint: {'x': .3, 'y': .3}
-            size_hint: .6, .1
-            text_size: (600, 60)
-        Label:
-            text: "Source : "
-            pos_hint: {'x': .0, 'y': .2}
-            size_hint: .16, .1
-            halign: 'right'
-            text_size: (600, 60)
-            font_size: '20sp'
-        TextInput:
-            pos: 400, 500
-            pos_hint: {'x': .3, 'y': .2}
-            size_hint: .6, .1
-            text_size: (900, 100)
+
         Button:
             text: 'Create'
             pos_hint: {'x': .3, 'y': .1}
             size_hint: .3, .1
             font_size: '20sp'
             on_press: root.manager.current = 'uploadoption'
+        ActionBar:
+            pos_hint: {'x': .0, 'y': .9}
+            ActionView:
+                use_separator: True
+                ActionPrevious:
+                    app_icon:'img/logo.png'
+                    title: ' File Info'
+                    with_previous: False
+                ActionOverflow:
+                ActionButton:
+                    icon:'img/prev.png'
+                    text:'Previous'
+                    on_press: root.manager.current = 'selectnotaryfile'
+                ActionButton:
+                    icon:'img/next.png'
+                    text: 'Next'
+                    on_press: root.manager.current = 'uploadoption'

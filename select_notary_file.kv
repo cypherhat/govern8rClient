@@ -7,18 +7,7 @@
             on_selection: root.my_callback(filechooser.selection)
             size: .9, .6
         Label:
-            text: ""
-            id: filelabel
-            pos_hint: {'x': .0, 'y': .0}
-            size_hint: .1, .1
-            halign: 'left'
-            font_size: '20sp'
-    BoxLayout:
-        orientation: 'horizontal'
-        spacing: 10
-        padding: 50
-        Label:
-            text: "Please select a file to upload above:"
+            text: "Please select a file to upload above:"+root.notary_file
             id: filelabel
             pos_hint: {'x': .0, 'y': .0}
             size_hint: .5, .1

@@ -1,13 +1,27 @@
 <SelectNotaryFileScreen>:
     BoxLayout:
         orientation: 'vertical'
+        Image:
+            size_hint: None, None
+            source: 'img/logo.png'
         FileChooserIconView:
             id: filechooser
             show_hidden: True
             on_selection: root.my_callback(filechooser.selection)
             size: .9, .6
         Label:
-            text: "Please select a file to upload above:"+root.notary_file
+            text: ""
+            id: filelabel
+            pos_hint: {'x': .0, 'y': .0}
+            size_hint: .1, .1
+            halign: 'left'
+            font_size: '20sp'
+    BoxLayout:
+        orientation: 'horizontal'
+        spacing: 10
+        padding: 50
+        Label:
+            text: "Please select a file to upload above:"
             id: filelabel
             pos_hint: {'x': .0, 'y': .0}
             size_hint: .5, .1

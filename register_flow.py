@@ -2,12 +2,12 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
-from notary_client import NotaryClient, NotaryException
-import simplecrypt
 
 
-def initFlow(m_app):
+def initFlow(m_app , ui_test):
     global notary_app
+    global ui_test_mode
+    ui_test_mode = ui_test
     notary_app = m_app
 
 
@@ -16,8 +16,11 @@ class CreateWalletScreen(Screen):
     retype_password = ObjectProperty(None)
 
     def create_wallet_callback(self):
-
         print('create wallet callback called')
+        if ui_test_mode:
+            notary_app.sm.current = "registerwallet"
+            return
+        from notary_client import NotaryClient
         password_value = self.ids.password.text
         retyped_value = self.ids.retype_password.text
         if password_value == retyped_value:
@@ -34,6 +37,9 @@ class RegisterWalletScreen(Screen):
 
     def register_wallet_callback(self):
         print('register wallet callback called')
+        if ui_test_mode:
+            notary_app.sm.current = "confirmemail"
+            return
         email_value = self.ids.email.text
         notary_app.notary_obj.register_user(email_value)
         notary_app.sm.current = 'confirmemail'
@@ -43,6 +49,11 @@ class PasswordScreen(Screen):
     password = ObjectProperty(None)
     def open_wallet_callback(self):
         print('open wallet callback called')
+        if ui_test_mode:
+            notary_app.sm.current = "selectnotaryfile"
+            return
+        from notary_client import NotaryClient, NotaryException
+        import simplecrypt
         password_value = self.ids.password.text
         try:
             notary_app.notary_obj = NotaryClient("notaryconfig.ini", password_value)
@@ -51,7 +62,10 @@ class PasswordScreen(Screen):
         except NotaryException as e:
             print("Code %s " % e.error_code)
             print(e.message)
-            notary_app.sm.current = 'confirmemail'
+            if e.error_code == 404:
+                notary_app.sm.current = 'registerwallet'
+            elif e.error_code == 403:
+                notary_app.sm.current = 'confirmemail'
         except ValueError as e:
             print("ValueError ")
             print(e.message)
@@ -70,6 +84,10 @@ class PasswordScreen(Screen):
 class ConfirmScreen(Screen):
     def confirm_email_callback(self):
         print('confirm email callback called')
+        if ui_test_mode:
+            notary_app.sm.current = "selectnotaryfile"
+            return
+        from notary_client import  NotaryException
         # print notary_obj.register_user_status()
         try:
             account = notary_app.notary_obj.get_account()
@@ -89,3 +107,4 @@ class ConfirmScreen(Screen):
                               size=(400, 200))
                 popup.open()
                 notary_app.sm.current = 'confirmemail'
+

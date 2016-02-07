@@ -1,10 +1,8 @@
+#:kivy 1.8.0
+#:import Factory kivy.factory.Factory
 <RegisterWalletScreen>:
     FloatLayout:
-        Label:
-            text: "Notary - Register "
-            pos_hint: {'x': .1, 'y': .8}
-            size_hint: .425, .1
-            font_size: '30sp'
+
         Label:
             text: "Email : "
             pos_hint: {'x': .1, 'y': .7}
@@ -16,9 +14,23 @@
             pos_hint: {'x': .3, 'y': .7}
             size_hint: .6, .1
             font_size: '40sp'
-        Button:
-            text: 'Register'
-            pos_hint: {'x': .3, 'y': .5}
-            size_hint: .3, .1
-            font_size: '20sp'
-            on_press: root.register_wallet_callback()
+
+        ActionBar:
+            pos_hint: {'x': .0, 'y': .9}
+            ActionView:
+
+                use_separator: True
+                ActionPrevious:
+                    app_icon:'img/logo.png'
+                    title: '  Register Wallet'
+                    with_previous: False
+                    on_press: root.register_wallet_callback()
+
+                ActionOverflow:
+                ActionButton:
+                    icon:'img/prev.png'
+                    text: 'Previous'
+
+                ActionButton:
+                    icon:'img/next.png'
+                    text: 'Next'

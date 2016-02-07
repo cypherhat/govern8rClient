@@ -3,8 +3,9 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
 import register_flow
 import notary_flow
+from kivy.uix.screenmanager import Screen
 
-ui_test_mode = False
+ui_test_mode = True
 
 class NotaryApp(App):
 
@@ -18,6 +19,8 @@ class NotaryApp(App):
         Builder.load_file("select_notary_file.kv")
         Builder.load_file("upload_option.kv")
         Builder.load_file("meta_data.kv")
+        self.title = "1styoos"
+        self.icon='img/logo.png'
         self.notary_obj = None
         self.selected_file_name = None
         self.sm = ScreenManager()

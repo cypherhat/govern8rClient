@@ -1,6 +1,7 @@
 <ViewClaimsScreen>:
     BoxLayout:
         orientation: 'vertical'
+        id: 'logobar'
         ActionBar:
             pos_hint: {'x': .0, 'y': .9}
             ActionView:
@@ -25,22 +26,27 @@
             size_hint: .1, .1
             halign: 'left'
             font_size: '20sp'
-    BoxLayout:
-        orientation: 'horizontal'
-        spacing: 10
-        padding: 50
-        Label:
-            text: "Title"
-            id: title_1
-            halign: 'left'
-            font_size: '20sp'
-        Label:
-            text: "Download"
-            id: title_1
-            halign: 'left'
-            font_size: '20sp'
-        Label:
-            text: "Status"
-            id: title_1
-            halign: 'left'
-            font_size: '20sp'
+        GridLayout:
+            cols: 3
+            id: claimsgrid
+            orientation: 'horizontal'
+            row_force_default: True
+            row_default_height: 50
+            padding: 20
+            spacing: 10
+
+            Label:
+                text: "Title"
+                id: title_1
+                halign: 'left'
+                font_size: '20sp'
+            Label:
+                text: "Download"
+                id: title_1
+                halign: 'left'
+                font_size: '20sp'
+            Label:
+                text: "Status"
+                id: title_1
+                halign: 'left'
+                font_size: '20sp'

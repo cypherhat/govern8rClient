@@ -1,6 +1,8 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.label import Label
+from kivy.uix.button import Button
 import register_flow
 import notary_flow
 from kivy.uix.screenmanager import Screen
@@ -11,7 +13,30 @@ class LandingScreen(Screen):
      pass
 
 class ViewClaimsScreen(Screen):
-     pass
+
+    def __init__(self, **kwargs):
+        super(Screen,self).__init__(**kwargs)
+        self.current = 'start'
+        #for child in self.children:
+        #    print(child.id)
+        print(str(self.ids.claimsgrid))
+        print(str(self.ids.title_1.text))
+
+        def callback(instance):
+            print ("register started")
+            print('The button <%s> is being pressed' % instance.text)
+
+        btn1 =Button(text='Button 1' , size=(200,50), size_hint=(None, None))
+        lbl2 =Label(text='Email2: ', size_hint=(.2, .05),  pos_hint={'x': .1, 'y': .9})
+        lbl3 =Label(text='Email3: ', size_hint=(.2, .05),  pos_hint={'x': .1, 'y': .9})
+
+        self.ids.claimsgrid.add_widget(btn1)
+        self.ids.claimsgrid.add_widget(lbl2)
+        self.ids.claimsgrid.add_widget(lbl3)
+
+        btn1.bind(on_press=callback)
+        lbl2.bind(on_press=callback)
+        lbl3.bind(on_press=callback)
 
 
 class NotaryApp(App):

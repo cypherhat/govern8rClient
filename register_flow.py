@@ -2,6 +2,10 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
+from notary_client import NotaryException
+from kivy.uix.label import Label
+from kivy.uix.button import Button
+import json
 
 
 def initFlow(m_app , ui_test):
@@ -69,6 +73,7 @@ class PasswordScreen(Screen):
         try:
             notary_app.notary_obj = NotaryClient("notaryconfig.ini", password_value)
             account = notary_app.notary_obj.get_account()
+            notary_app.sm.add_widget(ViewClaimsScreen(name='viewclaims'))
             notary_app.sm.current = 'landingpage'
         except NotaryException as e:
             print("Code %s " % e.error_code)
@@ -118,4 +123,51 @@ class ConfirmScreen(Screen):
                               size=(400, 200))
                 popup.open()
                 notary_app.sm.current = 'confirmemail'
+
+
+class ViewClaimsScreen(Screen):
+
+    def callback1(instance):
+            print ("register started")
+            print('The 1 button <%s> is being pressed' )
+    def callback2(instance):
+            print ("register started")
+            print('The 2 button <%s> is being pressed' )
+    def callback3(instance):
+            print ("register started")
+            print('The 3 button <%s> is being pressed')
+
+
+    def __init__(self, **kwargs):
+        super(Screen, self).__init__(**kwargs)
+        self.current = 'start'
+        try:
+            message = notary_app.notary_obj.get_notarizations()
+            if len(message) > 0:
+                print(message)
+                for notarization in message:
+                    print(notarization)
+                    print(notarization['title'])
+                    print(notarization['document_hash'][:4])
+                    print(notarization['transaction_hash'][:4])
+                    btn1 = Button(text=notarization['title'][:4], size=(200, 50), size_hint=(None, None))
+                    lbl2 = Label(text=notarization['document_hash'][:4], size_hint=(.2, .05), pos_hint={'x': .1, 'y': .9})
+                    lbl3 = Label(text=notarization['transaction_hash'][:4], size_hint=(.2, .05), pos_hint={'x': .1, 'y': .9})
+                    self.ids.claimsgrid.add_widget(btn1)
+                    self.ids.claimsgrid.add_widget(lbl2)
+                    self.ids.claimsgrid.add_widget(lbl3)
+                    btn1.bind(on_press=self.callback1)
+                    lbl2.bind(on_press=self.callback2)
+                    lbl3.bind(on_press=self.callback3)
+
+
+        except NotaryException as e:
+            print("Code %s " % e.error_code)
+            print(e.message)
+
+
+
+
+
+
 

@@ -10,6 +10,10 @@ ui_test_mode = True
 class LandingScreen(Screen):
      pass
 
+class ViewClaimsScreen(Screen):
+     pass
+
+
 class NotaryApp(App):
 
     def __init__(self):
@@ -23,6 +27,7 @@ class NotaryApp(App):
         Builder.load_file("upload_option.kv")
         Builder.load_file("meta_data.kv")
         Builder.load_file("landing_page.kv")
+        Builder.load_file("view_claims.kv")
         self.title = "1styoos"
         self.icon='img/logo.png'
         self.notary_obj = None
@@ -36,6 +41,7 @@ class NotaryApp(App):
         self.meta_data = notary_flow.MetadataScreen(name='metadata')
         self.uploadoption = notary_flow.UploadFileScreen(name='uploadoption')
         self.landingscreen = LandingScreen(name='landingpage')
+        self.viewclaims = ViewClaimsScreen(name='viewclaims')
         self.sm.add_widget(self.smcwallet)
         self.sm.add_widget(self.smrwallet)
         self.sm.add_widget(self.openwallet)
@@ -44,6 +50,7 @@ class NotaryApp(App):
         self.sm.add_widget(self.uploadoption)
         self.sm.add_widget(self.meta_data)
         self.sm.add_widget(self.landingscreen)
+        self.sm.add_widget(self.viewclaims)
 
     def find_state(self):
         import client_wallet

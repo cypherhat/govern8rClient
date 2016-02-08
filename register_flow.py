@@ -8,7 +8,7 @@ from kivy.uix.button import Button
 import json
 
 
-def initFlow(m_app , ui_test):
+def initFlow(m_app, ui_test):
     global notary_app
     global ui_test_mode
     ui_test_mode = ui_test
@@ -51,6 +51,7 @@ class RegisterWalletScreen(Screen):
 
 class PasswordScreen(Screen):
     password = ObjectProperty(None)
+
     def open_wallet_callback(self):
         print('open wallet callback called')
         if ui_test_mode:
@@ -103,7 +104,7 @@ class ConfirmScreen(Screen):
         if ui_test_mode:
             notary_app.sm.current = "landingpage"
             return
-        from notary_client import  NotaryException
+        from notary_client import NotaryException
         # print notary_obj.register_user_status()
         try:
             account = notary_app.notary_obj.get_account()
@@ -125,19 +126,19 @@ class ConfirmScreen(Screen):
                 notary_app.sm.current = 'confirmemail'
 
 
+class ClaimDownloadButton(Button):
+    def __init__(self, notarization_event,**kwargs):
+        super(ClaimDownloadButton, self).__init__(**kwargs)
+        self.notarization = notarization_event
+
+
+class ClaimStatusButton(Button):
+    def __init__(self, notarization_event,**kwargs):
+        super(ClaimStatusButton, self).__init__(**kwargs)
+        self.notarization = notarization_event
+
+
 class ViewClaimsScreen(Screen):
-
-    def callback1(instance):
-            print ("register started")
-            print('The 1 button <%s> is being pressed' )
-    def callback2(instance):
-            print ("register started")
-            print('The 2 button <%s> is being pressed' )
-    def callback3(instance):
-            print ("register started")
-            print('The 3 button <%s> is being pressed')
-
-
     def __init__(self, **kwargs):
         super(Screen, self).__init__(**kwargs)
         self.current = 'start'
@@ -150,24 +151,29 @@ class ViewClaimsScreen(Screen):
                     print(notarization['title'])
                     print(notarization['document_hash'][:4])
                     print(notarization['transaction_hash'][:4])
-                    btn1 = Button(text=notarization['title'][:4], size=(200, 50), size_hint=(None, None))
-                    lbl2 = Label(text=notarization['document_hash'][:4], size_hint=(.2, .05), pos_hint={'x': .1, 'y': .9})
-                    lbl3 = Label(text=notarization['transaction_hash'][:4], size_hint=(.2, .05), pos_hint={'x': .1, 'y': .9})
-                    self.ids.claimsgrid.add_widget(btn1)
-                    self.ids.claimsgrid.add_widget(lbl2)
-                    self.ids.claimsgrid.add_widget(lbl3)
-                    btn1.bind(on_press=self.callback1)
-                    lbl2.bind(on_press=self.callback2)
-                    lbl3.bind(on_press=self.callback3)
+                    lbl1 = Label(text=notarization['title'], size=(200, 50), size_hint=(.9, 1.5),font_size='20sp')
+
+                    download_button = ClaimDownloadButton(notarization_event=notarization)
+                    status_button = ClaimStatusButton(notarization_event=notarization)
+
+                    self.ids.claimsgrid.add_widget(lbl1)
+                    self.ids.claimsgrid.add_widget(download_button)
+                    self.ids.claimsgrid.add_widget(status_button)
+
+
+
+                    def download_callback(instance):
+                        print ("register started")
+                        print('The 1 button <%s> is being pressed' + instance.notarization['transaction_hash'])
+
+                    def status_callback(instance):
+                        print ("register started")
+                        print('The 2 button <%s> is being pressed' + instance.notarization['transaction_hash'])
+
+                    download_button.bind(on_press=download_callback)
+                    status_button.bind(on_press=status_callback)
 
 
         except NotaryException as e:
             print("Code %s " % e.error_code)
             print(e.message)
-
-
-
-
-
-
-

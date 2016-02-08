@@ -7,14 +7,8 @@
             size_hint: .7, .1
             halign: 'left'
             font_size: '20sp'
-
         Label:
-            text: "We are going to notarize your file now ..."
-            pos_hint: {'x': .1, 'y': .8}
-            size_hint: .8, .1
-            font_size: '30sp'
-        Label:
-            text: "Note, ou can upload your file for safe and secure storage."
+            text: "You can upload your file for safe and secure storage."
             pos_hint: {'x': .1, 'y': .7}
             size_hint: .8, .1
             font_size: '30sp'
@@ -36,3 +30,20 @@
             size_hint: .2, .1
             font_size: '20sp'
             on_press: root.no_callback()
+        ActionBar:
+            pos_hint: {'x': .0, 'y': .9}
+            ActionView:
+
+                use_separator: True
+                ActionPrevious:
+                    app_icon:'img/logo.png'
+                    title: ' Upload'
+                    with_previous: False
+                ActionOverflow:
+                ActionButton:
+                    icon:'img/prev.png'
+                    on_press: root.manager.current = 'metadata'
+                ActionButton:
+                    icon:'img/next.png'
+                    text: 'Next'
+                    on_press: root.manager.current = 'landingpage'

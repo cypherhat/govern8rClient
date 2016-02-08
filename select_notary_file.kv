@@ -1,9 +1,23 @@
 <SelectNotaryFileScreen>:
     BoxLayout:
         orientation: 'vertical'
-        Image:
-            size_hint: None, None
-            source: 'img/logo.png'
+        ActionBar:
+            pos_hint: {'x': .0, 'y': .9}
+            ActionView:
+
+                use_separator: True
+                ActionPrevious:
+                    app_icon:'img/logo.png'
+                    title: '  Select File'
+                    with_previous: False
+                ActionOverflow:
+                ActionButton:
+                    icon:'img/prev.png'
+                    on_press: root.manager.current = 'landingpage'
+                ActionButton:
+                    icon:'img/next.png'
+                    text: 'Next'
+                    on_press: root.manager.current = 'metadata'
         FileChooserIconView:
             id: filechooser
             show_hidden: True
@@ -27,10 +41,3 @@
             size_hint: .5, .1
             halign: 'left'
             font_size: '20sp'
-        Button:
-            text: 'Next'
-            pos_hint: {'x': .05, 'y': .0}
-            size_hint: .3, .1
-            font_size: '20sp'
-            on_press: root.manager.current = 'metadata'
-            padding_left: .1

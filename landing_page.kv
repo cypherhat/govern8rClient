@@ -1,0 +1,22 @@
+<LandingScreen>:
+    FloatLayout:
+        Label:
+            id:selected_file
+            text: "Welcome to 1styoos"
+            pos_hint: {'x': .1, 'y': .9}
+            size_hint: .7, .1
+            halign: 'left'
+            font_size: '20sp'
+
+        Button:
+            text: 'Claim'
+            pos_hint: {'x': .3, 'y': .7}
+            size_hint: .2, .1
+            font_size: '20sp'
+            on_press: root.manager.current = 'selectnotaryfile'
+        Button:
+            text: 'Old Claims'
+            pos_hint: {'x': .3, 'y': .5}
+            size_hint: .2, .1
+            font_size: '20sp'
+            on_press: root.manager.current = 'selectnotaryfile'

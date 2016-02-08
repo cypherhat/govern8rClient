@@ -1,0 +1,52 @@
+<ViewClaimsScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        id: 'logobar'
+        ActionBar:
+            pos_hint: {'x': .0, 'y': .9}
+            ActionView:
+
+                use_separator: True
+                ActionPrevious:
+                    app_icon:'img/logo.png'
+                    title: '  View Previous Claims'
+                    with_previous: False
+                ActionOverflow:
+                ActionButton:
+                    icon:'img/prev.png'
+                    on_press: root.manager.current = 'landingpage'
+                ActionButton:
+                    icon:'img/next.png'
+                    text: 'Next'
+                    on_press: root.manager.current = 'metadata'
+        Label:
+            text: ""
+            id: filelabel
+            pos_hint: {'x': .0, 'y': .0}
+            size_hint: .1, .1
+            halign: 'left'
+            font_size: '20sp'
+        GridLayout:
+            cols: 3
+            id: claimsgrid
+            orientation: 'horizontal'
+            row_force_default: True
+            row_default_height: 50
+            padding: 20
+            spacing: 10
+
+            Label:
+                text: "Title"
+                id: title_1
+                halign: 'left'
+                font_size: '20sp'
+            Label:
+                text: "Download"
+                id: title_1
+                halign: 'left'
+                font_size: '20sp'
+            Label:
+                text: "Status"
+                id: title_1
+                halign: 'left'
+                font_size: '20sp'

@@ -1,28 +1,19 @@
 <MetadataScreen>:
     FloatLayout:
         Label:
-            text: "Notary - File Details "
-            pos_hint: {'x': .1, 'y': .9}
-            size_hint: .5, .1
-            font_size: '30sp'
-        Label:
-            text: "Title : "
+            text: "File Name : "
             pos_hint: {'x': .0, 'y': .7}
             size_hint: .16, .1
             halign: 'right'
             text_size: (600, 60)
             font_size: '20sp'
-        TextInput:
+        Label:
             pos_hint: {'x': .3, 'y': .7}
+            id: filename
             size_hint: .6, .1
             text_size: (600, 60)
-
-        Button:
-            text: 'Create'
-            pos_hint: {'x': .3, 'y': .1}
-            size_hint: .3, .1
             font_size: '20sp'
-            on_press: root.manager.current = 'uploadoption'
+
         ActionBar:
             pos_hint: {'x': .0, 'y': .9}
             ActionView:

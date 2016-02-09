@@ -29,6 +29,7 @@ class NotaryApp(App):
         Builder.load_file("meta_data.kv")
         Builder.load_file("landing_page.kv")
         Builder.load_file("view_claims.kv")
+        Builder.load_file("claim_download_button.kv")
         self.title = "1styoos"
         self.icon = 'img/logo.png'
         self.notary_obj = None

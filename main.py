@@ -43,6 +43,7 @@ class NotaryApp(App):
         self.meta_data = notary_flow.MetadataScreen(name='metadata')
         self.uploadoption = notary_flow.UploadFileScreen(name='uploadoption')
         self.landingscreen = LandingScreen(name='landingpage')
+        self.claimsscreen = register_flow.ViewClaimsScreen(name='viewclaims')
         self.sm.add_widget(self.smcwallet)
         self.sm.add_widget(self.smrwallet)
         self.sm.add_widget(self.openwallet)
@@ -51,6 +52,7 @@ class NotaryApp(App):
         self.sm.add_widget(self.uploadoption)
         self.sm.add_widget(self.meta_data)
         self.sm.add_widget(self.landingscreen)
+        self.sm.add_widget(self.claimsscreen)
 
 
     def find_state(self):

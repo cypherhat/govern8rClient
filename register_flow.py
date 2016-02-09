@@ -74,7 +74,6 @@ class PasswordScreen(Screen):
         try:
             notary_app.notary_obj = NotaryClient("notaryconfig.ini", password_value)
             account = notary_app.notary_obj.get_account()
-            notary_app.sm.add_widget(ViewClaimsScreen(name='viewclaims'))
             notary_app.sm.current = 'landingpage'
         except NotaryException as e:
             print("Code %s " % e.error_code)
@@ -141,7 +140,8 @@ class ClaimStatusButton(Button):
 class ViewClaimsScreen(Screen):
     def __init__(self, **kwargs):
         super(Screen, self).__init__(**kwargs)
-        self.current = 'start'
+
+    def on_enter_event(self):
         try:
             message = notary_app.notary_obj.get_notarizations()
             if len(message) > 0:
@@ -182,3 +182,5 @@ class ViewClaimsScreen(Screen):
         except NotaryException as e:
             print("Code %s " % e.error_code)
             print(e.message)
+    def on_leave_event(self):
+            self.ids.claimsgrid.clear_widgets()

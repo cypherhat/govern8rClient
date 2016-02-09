@@ -1,3 +1,4 @@
+#:import os os
 <MetadataScreen>:
     FloatLayout:
         Label:
@@ -8,12 +9,55 @@
             text_size: (600, 60)
             font_size: '20sp'
         Label:
-            pos_hint: {'x': .3, 'y': .7}
+            pos_hint: {'x': .2, 'y': .7}
             id: filename
             text: ""+root.notary_file
             size_hint: .6, .1
             text_size: (600, 60)
             font_size: '20sp'
+        Label:
+            text: "Date Created : "
+            pos_hint: {'x': .0, 'y': .6}
+            size_hint: .16, .1
+            halign: 'right'
+            text_size: (600, 60)
+            font_size: '20sp'
+        Label:
+            pos_hint: {'x': .2, 'y': .6}
+            id: filename
+            text: ""+root.file_created_dt
+            size_hint: .6, .1
+            text_size: (600, 60)
+            font_size: '20sp'
+        Label:
+            text: "Date Modified : "
+            pos_hint: {'x': .0, 'y': .5}
+            size_hint: .16, .1
+            halign: 'right'
+            text_size: (600, 60)
+            font_size: '20sp'
+        Label:
+            pos_hint: {'x': .2, 'y': .5}
+            id: filename
+            text: ""+root.file_mod_dt
+            size_hint: .6, .1
+            text_size: (600, 60)
+            font_size: '20sp'
+        Label:
+            text: "Created By : "
+            pos_hint: {'x': .0, 'y': .4}
+            size_hint: .16, .1
+            halign: 'right'
+            text_size: (600, 60)
+            font_size: '20sp'
+        Label:
+            pos_hint: {'x': .2, 'y': .4}
+            id: filename
+            text: ""+root.file_created_by
+            size_hint: .6, .1
+            text_size: (600, 60)
+            font_size: '20sp'
+
 
         ActionBar:
             pos_hint: {'x': .0, 'y': .9}

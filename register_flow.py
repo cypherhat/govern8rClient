@@ -164,11 +164,16 @@ class ViewClaimsScreen(Screen):
 
                     def download_callback(instance):
                         print ("register started")
-                        print('The 1 button <%s> is being pressed' + instance.notarization['transaction_hash'])
-
+                        print('The 1 button <%s> is being pressed' + instance.notarization['document_hash'])
+                        notary_app.notary_obj.download_file( instance.notarization['document_hash'], instance.notarization['title'])
+                        print ("document downloaded")
                     def status_callback(instance):
+                        import webbrowser
                         print ("register started")
                         print('The 2 button <%s> is being pressed' + instance.notarization['transaction_hash'])
+                        webbrowser.open("https://live.blockcypher.com/btc-testnet/tx/"+instance.notarization['transaction_hash'])
+
+
 
                     download_button.bind(on_press=download_callback)
                     status_button.bind(on_press=status_callback)

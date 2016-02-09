@@ -130,16 +130,9 @@ class MetadataScreen(Screen):
         json = getMetaData(self.notary_file_no_path,self.file_owner,self.file_created_dt,self.file_created_by)
 
         print('Meta Json Test: ' + str(json))
-        result = notary_app.notary_obj.notarize_file(str(self.notary_file), json)
-        notary_app.notary_obj.upload_file(str(self.notary_file))
-        print('The button Yes is being pressed')
-        if ui_test_mode:
-            notary_app.sm.current = "viewclaims"
-            return
         import notary_client
-
         try :
-            result = notary_app.notary_obj.notarize_file(str(self.notary_file), getMetaData())
+            result = notary_app.notary_obj.notarize_file(str(self.notary_file), json)
         except notary_client.NotaryException as e:
            print("Code %s " % e.error_code)
            print(e.message)

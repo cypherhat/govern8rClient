@@ -25,6 +25,7 @@ class SelectNotaryFileScreen(Screen):
             print('The button <%s> is being pressed' + filename[0])
             selected_file_name = filename[0]
             notary_app.uploadoption.notary_file = selected_file_name
+            notary_app.meta_data.notary_file = selected_file_name
             self.notary_file = selected_file_name
             notary_app.sm.current='selectnotaryfile'
         else:
@@ -62,8 +63,7 @@ class UploadFileScreen(Screen):
             notary_app.sm.current = "landingpage"
             return
         result = notary_app.notary_obj.notarize_file(str(self.notary_file), getMetaData())
-        message_value = 'Your document notarization is done !!!' + 'https://live.blockcypher.com/btc-testnet/tx/' + str(
-                result)
+        message_value = 'Your document notarization is done !!!'
         popup = Popup(title='Confirmation of Notary', content=Label(text=message_value),
                       size_hint=(None, None),
                       size=(400, 200))
@@ -79,10 +79,10 @@ class UploadFileScreen(Screen):
                       size=(400, 200))
         popup.open()
 
-        notary_app.sm.current = 'landingpage'
+        notary_app.sm.current = 'viewclaims'
 
     def no_callback(self):
-        print('The button Nois being pressed')
+        print('The button No is being pressed')
         if ui_test_mode:
             notary_app.sm.current = "uploadoption"
             return
@@ -94,5 +94,8 @@ class UploadFileScreen(Screen):
                       size=(400, 200))
         popup.open()
         notary_app.sm.current = 'uploadoption'  # Create the screen manager
+
 class MetadataScreen(Screen):
-    pass
+    notary_file = StringProperty()
+
+

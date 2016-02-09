@@ -49,6 +49,18 @@ class SelectNotaryFileScreen(Screen):
         else:
             print "Nothing selected"
 
+    def next_callback(self):
+        if len(self.notary_file) > 0:
+            notary_app.sm.current = 'metadata'
+        else:
+            message_value = 'No File Selected. Choose one first.'
+            popup = Popup(title='File Selection', content=Label(text=message_value),
+                      size_hint=(None, None),
+                      size=(400, 200))
+            popup.open()
+
+
+
 
 def getMetaData(notary_file, file_owner, file_created_dt, file_created_by):
     print('Meta: ' + notary_file)

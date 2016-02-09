@@ -18,7 +18,7 @@
                 ActionButton:
                     icon:'img/next.png'
                     text: 'Next'
-                    on_press: root.manager.current = 'metadata'
+                    on_press: root.next_callback()
         Label:
             text: "Please select a file to upload below:"
             id: filelabel

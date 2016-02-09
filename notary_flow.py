@@ -94,7 +94,7 @@ class UploadFileScreen(Screen):
                       size=(400, 200))
         popup.open()
 
-        notary_app.notary_obj.upload_file(str(self.notary_file))
+        notary_app.notary_obj.upload_file_encrypted(str(self.notary_file))
         popup = Popup(title='Confirmation of Upload', content=Label(text='Your document upload is done !!!'),
                       size_hint=(None, None),
                       size=(400, 200))
@@ -132,6 +132,23 @@ class MetadataScreen(Screen):
         print('Meta Json Test: ' + str(json))
         result = notary_app.notary_obj.notarize_file(str(self.notary_file), json)
         notary_app.notary_obj.upload_file(str(self.notary_file))
+        print('The button Yes is being pressed')
+        if ui_test_mode:
+            notary_app.sm.current = "viewclaims"
+            return
+        import notary_client
+
+        try :
+            result = notary_app.notary_obj.notarize_file(str(self.notary_file), getMetaData())
+        except notary_client.NotaryException as e:
+           print("Code %s " % e.error_code)
+           print(e.message)
+
+        try :
+            notary_app.notary_obj.upload_file_encrypted(str(self.notary_file))
+        except notary_client.NotaryException as e:
+           print("Code %s " % e.error_code)
+           print(e.message)
 
         popup = Popup(title='Confirmation of Upload',
                       content=Label(text='Congrats. Your document notariztion and upload are successfully.'),

@@ -1,3 +1,4 @@
+#:import getpass getpass
 <SelectNotaryFileScreen>:
     BoxLayout:
         orientation: 'vertical'
@@ -18,26 +19,23 @@
                     icon:'img/next.png'
                     text: 'Next'
                     on_press: root.manager.current = 'metadata'
+        Label:
+            text: "Please select a file to upload below:"
+            id: filelabel
+            pos_hint: {'x': .0, 'y': .0}
+            size_hint: .45, .1
+            halign: 'left'
+            font_size: '20sp'
         FileChooserIconView:
             id: filechooser
             show_hidden: True
             on_selection: root.my_callback(filechooser.selection)
             size: .9, .6
+            rootpath: str('/Users/' + getpass.getuser() + '/Downloads')
         Label:
             text: ""
             id: filelabel
             pos_hint: {'x': .0, 'y': .0}
             size_hint: .1, .1
-            halign: 'left'
-            font_size: '20sp'
-    BoxLayout:
-        orientation: 'horizontal'
-        spacing: 10
-        padding: 50
-        Label:
-            text: "Please select a file to upload above:"
-            id: filelabel
-            pos_hint: {'x': .0, 'y': .0}
-            size_hint: .5, .1
             halign: 'left'
             font_size: '20sp'

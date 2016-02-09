@@ -2,21 +2,37 @@
     FloatLayout:
         Label:
             id:selected_file
-            text: "Welcome to 1styoos"
-            pos_hint: {'x': .1, 'y': .9}
+            text: "File a new claim, or view previously filed claims:"
+            pos_hint: {'x': .15, 'y': .7}
             size_hint: .7, .1
             halign: 'left'
             font_size: '20sp'
 
         Button:
-            text: 'Claim'
-            pos_hint: {'x': .3, 'y': .7}
+            text: 'File New Claim'
+            pos_hint: {'x': .27, 'y': .5}
             size_hint: .2, .1
             font_size: '20sp'
             on_press: root.manager.current = 'selectnotaryfile'
         Button:
-            text: 'Old Claims'
-            pos_hint: {'x': .3, 'y': .5}
+            text: 'View Claims'
+            pos_hint: {'x': .52, 'y': .5}
             size_hint: .2, .1
             font_size: '20sp'
             on_press: root.manager.current = 'viewclaims'
+        ActionBar:
+            pos_hint: {'x': .0, 'y': .9}
+            ActionView:
+
+                use_separator: True
+                ActionPrevious:
+                    app_icon:'img/logo.png'
+                    title: ' Upload'
+                    with_previous: False
+                ActionOverflow:
+                ActionButton:
+                    icon:''
+                    disabled: True
+                ActionButton:
+                    icon:''
+                    disabled: True

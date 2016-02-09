@@ -165,7 +165,7 @@ class ViewClaimsScreen(Screen):
                     def download_callback(instance):
                         print ("register started")
                         print('The 1 button <%s> is being pressed' + instance.notarization['document_hash'])
-                        notary_app.notary_obj.download_file( instance.notarization['document_hash'], instance.notarization['title'])
+                        notary_app.notary_obj.download_file_decrypted( instance.notarization['document_hash'], instance.notarization['title'])
                         print ("document downloaded")
                     def status_callback(instance):
                         import webbrowser

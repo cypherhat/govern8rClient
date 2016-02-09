@@ -1,6 +1,10 @@
 from kivy.uix.screenmanager import Screen
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+import os.path, time
+import ntpath
+from os import stat
+from pwd import getpwuid
 
 from kivy.properties import ObjectProperty, StringProperty
 
@@ -17,29 +21,48 @@ class SelectNotaryFileScreen(Screen):
     filelabel = ObjectProperty(None)
     notary_file = StringProperty()
 
+    def path_leaf(self, path):
+        head, tail = ntpath.split(path)
+        return tail or ntpath.basename(head)
+
     def my_callback(self, filename):
-        if ui_test_mode:
-            notary_app.sm.current = "selectnotaryfile"
-            return
         if len(filename) > 0:
             print('The button <%s> is being pressed' + filename[0])
+            print('The parsed title is ' + self.path_leaf(str(filename[0])))
+            print('Time is ' + time.ctime(os.path.getctime(filename[0])))
+            print('Owner is ' + getpwuid(stat(filename[0]).st_uid).pw_name)
+
             selected_file_name = filename[0]
+            selected_file_name_no_path = self.path_leaf(str(filename[0]))
+            selected_file_created_dt = '' + time.ctime(os.path.getctime(filename[0]))
+            selected_file_mod_dt = '' + time.ctime(os.path.getmtime(filename[0]))
+            selected_file_owner = getpwuid(stat(selected_file_name).st_uid).pw_name
+
             notary_app.meta_data.notary_file = selected_file_name
+            notary_app.meta_data.notary_file_no_path = selected_file_name_no_path
+            notary_app.meta_data.file_created_dt = selected_file_created_dt
+            notary_app.meta_data.file_mod_dt = selected_file_mod_dt
+            notary_app.meta_data.file_created_by = selected_file_owner
+
             self.notary_file = selected_file_name
             notary_app.sm.current = 'selectnotaryfile'
         else:
             print "Nothing selected"
 
 
-def getMetaData():
+def getMetaData(notary_file, file_owner, file_created_dt, file_created_by):
+    print('Meta: ' + notary_file)
+    print('Meta: ' + file_created_dt)
+    print('Meta: ' + file_created_by)
+
     meta_data = {
-        'title': 'My favorite monkey',
-        'creator': 'Ploughman, J.J.',
+        'title': notary_file,
+        'creator': file_created_by,
         'subject': 'TV show',
         'description': 'A show about a monkey... that you like the best...',
         'publisher': 'J.J. Ploughman',
         'contributor': 'J.J. Ploughman',
-        'date': '2001-08-03T03:00:00.000000',
+        'date': file_created_dt,
         'type': 'Video',
         'format': 'mpeg',
         'source': 'CBS',
@@ -53,6 +76,10 @@ def getMetaData():
 
 class UploadFileScreen(Screen):
     notary_file = StringProperty()
+    file_owner = StringProperty()
+    file_created_dt = StringProperty()
+    file_mod_dt = StringProperty()
+    file_created_by = StringProperty()
     selected_file = ObjectProperty(None)
 
     def yes_callback(self):
@@ -67,7 +94,7 @@ class UploadFileScreen(Screen):
                       size=(400, 200))
         popup.open()
 
-        notary_app.notary_obj.upload_file(str(self.notary_file))
+        notary_app.notary_obj.upload_file_encrypted(str(self.notary_file))
         popup = Popup(title='Confirmation of Upload', content=Label(text='Your document upload is done !!!'),
                       size_hint=(None, None),
                       size=(400, 200))
@@ -89,17 +116,32 @@ class UploadFileScreen(Screen):
         popup.open()
         notary_app.sm.current = 'landingpage'  # Create the screen manager
 
-
 class MetadataScreen(Screen):
     notary_file = StringProperty()
+    notary_file_no_path = StringProperty()
+    file_owner = StringProperty()
+    file_created_dt = StringProperty()
+    file_mod_dt = StringProperty()
+    file_created_by = StringProperty()
 
     def yes_callback(self):
-        print('The button Yes is being pressed')
-        if ui_test_mode:
-            notary_app.sm.current = "viewclaims"
-            return
-        result = notary_app.notary_obj.notarize_file(str(self.notary_file), getMetaData())
-        notary_app.notary_obj.upload_file(str(self.notary_file))
+        print('The button Yes is being pressed' + self.notary_file)
+
+        json = getMetaData(self.notary_file_no_path,self.file_owner,self.file_created_dt,self.file_created_by)
+
+        print('Meta Json Test: ' + str(json))
+        import notary_client
+        try :
+            result = notary_app.notary_obj.notarize_file(str(self.notary_file), json)
+        except notary_client.NotaryException as e:
+           print("Code %s " % e.error_code)
+           print(e.message)
+
+        try :
+            notary_app.notary_obj.upload_file_encrypted(str(self.notary_file))
+        except notary_client.NotaryException as e:
+           print("Code %s " % e.error_code)
+           print(e.message)
 
         popup = Popup(title='Confirmation of Upload',
                       content=Label(text='Congrats. Your document notariztion and upload are successfully.'),
